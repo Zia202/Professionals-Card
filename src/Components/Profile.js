@@ -11,9 +11,9 @@ import {
 } from "@mui/material";
 import { grey } from '@mui/material/colors';
 
-const Profile = () => {
+const Profile = ({profileData}) => {
+  console.log("profile compoenr", profileData)
   return (
-    <>
       <Paper
         sx={{
           padding: "10px",
@@ -27,9 +27,9 @@ const Profile = () => {
           <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
             <Box sx={{ position: "absolute", top: "100px", left: "250px" }}>
               <img
-                src='https://flagcdn.com/16x12/pk.png'
-                srcset='https://flagcdn.com/32x24/pk.png 2x,
-                         https://flagcdn.com/48x36/pk.png 3x'
+                src={`https://flagcdn.com/16x12/${profileData.countryCode.toLowerCase()}.png`}
+                srcset={`https://flagcdn.com/32x24/${profileData.countryCode.toLowerCase()}.png 2x,
+                         https://flagcdn.com/48x36/${profileData.countryCode.toLowerCase()}.png 3x`}
                 width='16'
                 height='12'
                 alt='Countries Flags'
@@ -53,14 +53,14 @@ const Profile = () => {
                 }}
               />
               <Typography sx={{ color: "#e2e2e2" }} variant='h5'>
-                Zia Ullah Sarwar
+                {profileData.name}
               </Typography>
              
             </Stack>
-            <Paper sx={{backgroundColor:"#e2e2e2", borderRadius:"10px", padding:"10px", maxWidth:"200px", boxShadow:"5px white"}} elevation={0}>
+            {/* <Paper sx={{backgroundColor:"#e2e2e2", borderRadius:"10px", padding:"10px", maxWidth:"200px", boxShadow:"5px white"}} elevation={0}>
               <Typography variant="caption">Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero
               eos fuga minus delectus quisquam.</Typography>
-            </Paper>
+            </Paper> */}
           </Grid>
         {/* <Divider orientation="vertical" color={grey[400]} flexItem></Divider> */}
           <Grid item xs={12} sm={12} md={8} lg={8} xl={8} p={4}>
@@ -69,28 +69,27 @@ const Profile = () => {
               <Typography variant='body1' sx={{ fontWeight: "bolder" }}>
                 Name
               </Typography>
-              <Typography variant='body2'>Zia Ullah Sarwar</Typography>
+              <Typography variant='body2'>{profileData.name}</Typography>
               <Typography variant='body1' sx={{ fontWeight: "bolder" }}>
                 E-mail
               </Typography>
-              <Typography variant='body2'>ziasarwar20297@gmail.com</Typography>
+              <Typography variant='body2'>{profileData.email}</Typography>
               <Typography variant='body1' sx={{ fontWeight: "bolder" }}>
                 Phone No
               </Typography>
-              <Typography variant='body2'>+92-320-4341299</Typography>
+              <Typography variant='body2'>{profileData.phoneNo}</Typography>
               <Typography variant='body1' sx={{ fontWeight: "bolder" }}>
                 Address
               </Typography>
-              <Typography variant='body2'>881 Faisal town Lahore</Typography>
+              <Typography variant='body2'>{profileData.address}</Typography>
               <Typography variant='body1' sx={{ fontWeight: "bolder" }}>
                 Country
               </Typography>
-              <Typography variant='body2'>Pakistan</Typography>
+              <Typography variant='body2'>{profileData.country}</Typography>
             </Stack>
           </Grid>
         </Grid>
       </Paper>
-    </>
   );
 };
 

@@ -35,7 +35,7 @@ const Professionals = () => {
              <Grid item xs={12} sm={6} md={4} lg={4} xl={4} mb={8}>
              
                <Paper elevation={4} sx={{ padding: "10px", minHeight:'280px', borderRadius:'15px'}}>
-               <Link to="/Profile">
+               <Link to={`/Profile/${item.id}`}>
               <Stack
                 direction='column'
                 display='flex'
