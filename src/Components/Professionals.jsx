@@ -52,7 +52,7 @@ const Professionals = () => {
                     border: "solid 2px black",
                   }}
                 />
-                <Typography variant='body2' p={1}>
+                <Typography variant='body2' sx={{textDecoration:"none !important"}} p={1}>
                   {item.name}
                 </Typography>
                 <Typography variant='caption'>{item.email}</Typography>
@@ -66,7 +66,7 @@ const Professionals = () => {
                   width='16'
                   height='12'
                   alt='Countries Flags'
-                />
+                /> 
                </Box>
               <Stack direction='row' pl={3}>
                 <FaPhoneAlt />

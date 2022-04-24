@@ -8,10 +8,28 @@ import {
   Typography,
   Stack,
   Box,
+  Button,
+  IconButton,
+  Menu,
+  MenuItem
 } from "@mui/material";
 import { grey } from '@mui/material/colors';
+import {BsThreeDotsVertical} from "react-icons/bs";
+
 
 const Profile = ({profileData}) => {
+
+  // ============================Menu Button================================
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  // ================================================================
+
   console.log("profile compoenr", profileData)
   return (
       <Paper
@@ -24,6 +42,32 @@ const Profile = ({profileData}) => {
         elevation={8}
       >
         <Grid container>
+          {/* ===================Menu Button==================== */}
+          <IconButton
+          color={grey[400]}
+        id="basic-button"
+        aria-controls={open ? 'basic-menu' : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+        onClick={handleClick}
+        ico
+      >
+        <BsThreeDotsVertical />
+      </IconButton>
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
+        }}
+      >
+        <MenuItem onClick={handleClose}>Profile</MenuItem>
+        <MenuItem onClick={handleClose}>My account</MenuItem>
+        <MenuItem onClick={handleClose}>Logout</MenuItem>
+      </Menu>
+      {/* ====================================================== */}
           <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
             <Box sx={{ position: "absolute", top: "100px", left: "250px" }}>
               <img
