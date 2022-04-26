@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useMemo } from "react";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { useParams ,useNavigate} from "react-router-dom";
 
 import {
   Paper,
@@ -21,10 +21,13 @@ import {
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { FiUpload } from "react-icons/fi";
 import { BiEditAlt } from "react-icons/bi";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { MdOutlineCancel } from "react-icons/md";
 
 import axios from "axios";
 
-const Profile = ({ profileData }) => {
+const Profile = ({ profileData ,setProfileData}) => {
+  const navigate = useNavigate();
   const [edit, setEdit] = useState(false);
   const { register, handleSubmit } = useForm();
   const params = useParams();
@@ -35,14 +38,23 @@ const Profile = ({ profileData }) => {
   const cancelHandler = () => {
     setEdit(false);
   };
-
-  const saveDataHandler = (data) => {
-    const userData = axios.put(
+  const deletehandler =async()=>{
+    const del = await axios.delete(
       `https://625f910092df0bc0f3367d6b.mockapi.io/api/v1/Users/${params.id}`
-        .data
     );
-    console.log("data", data);
+    if(del){
+      navigate("/");  
+    }
+  }
+  const saveDataHandler = async(data) => {
+    const userData = await axios.put(
+      `https://625f910092df0bc0f3367d6b.mockapi.io/api/v1/Users/${params.id}`
+        ,data
+    );
+   
+    console.log("data", userData);
     if (userData) {
+      setProfileData(userData.data);
       setEdit(false);
     }
   };
@@ -67,12 +79,9 @@ const Profile = ({ profileData }) => {
       }}
       elevation={8}
     >
-      {/* ===================Menu Button==================== */}
-      {/* <Button color="primary" variant="contained"
-        sx={{ float: "right", margin:"10px", textTransform:"capitalize"}}>
-           Edit <BiEditAlt />
-        </Button> */}
-      <IconButton
+  {/* =======================Menu Button==================== */}
+      
+      {/* <IconButton
         id='basic-button'
         aria-controls={open ? "basic-menu" : undefined}
         aria-haspopup='true'
@@ -94,7 +103,28 @@ const Profile = ({ profileData }) => {
         <MenuItem onClick={editHandler}>Edit</MenuItem>
         <MenuItem onClick={handleClose}>Delete</MenuItem>
         <MenuItem onClick={handleClose}>Logout</MenuItem>
-      </Menu>
+      </Menu> */}
+
+{!edit ? (
+<IconButton onClick={editHandler} color="primary" 
+        sx={{ float: "right", marginRight:"10px"}}>
+            <BiEditAlt />
+        </IconButton>
+):(
+  <> 
+  <IconButton color="success" 
+     onClick={cancelHandler}
+        sx={{ float: "right", marginRight:"10px"}}>
+            <MdOutlineCancel />
+        </IconButton>
+ <IconButton color="error" 
+        sx={{ float: "right", marginRight:"10px"}}>
+            <RiDeleteBin6Line onClick={deletehandler}/>
+        </IconButton>
+        </>
+
+)}
+
       {/* ====================================================== */}
       <Grid container>
         <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
@@ -114,8 +144,12 @@ const Profile = ({ profileData }) => {
             display='flex'
             justifyContent='center'
             alignItems='center'
-            pt={4}
+             pt={4}
           >
+             <IconButton size="medium" component="label" sx={{position:"relative", left:"100px", top:"150px"}}>
+            <input type='file' hidden />
+              <FiUpload color="error"></FiUpload>
+            </IconButton>
             <Avatar
               alt='avatar'
               src='user.jpg'
@@ -126,9 +160,7 @@ const Profile = ({ profileData }) => {
                 boxShadow: 5,
               }}
             />
-            <IconButton size="medium">
-              <FiUpload color="error"></FiUpload>
-            </IconButton>
+           
 
             <Typography variant='h5'>{profileData.name}</Typography>
           </Stack>
@@ -211,7 +243,7 @@ const Profile = ({ profileData }) => {
                   <Select
                     size='small'
                     {...register("country")}
-                    defaultValue={profileData.country}
+                    label={profileData.country}
                   >
                     <MenuItem>{profileData.country}</MenuItem>
                   </Select>

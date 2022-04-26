@@ -27,7 +27,8 @@ const Professionals = () => {
         justifyContent='center'
         alignItems='center'
         p={5}
-        color={grey[300]}
+        mb={5}
+         color={grey[300]}
       >
         Hire The Best Professionals
       </Typography>

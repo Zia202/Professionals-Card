@@ -23,7 +23,7 @@ const Index = () => {
   return (
     <>
     {
-      profileData && <Profile profileData={profileData}/>
+      profileData && <Profile profileData={profileData} setProfileData={setProfileData}/>
     }
       
     </>
