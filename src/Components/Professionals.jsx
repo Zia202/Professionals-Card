@@ -21,19 +21,20 @@ const Professionals = () => {
   }, []);
   return (
     <>
-         <Typography
+        
+       <Typography
          variant='h3'
         display='flex'
         justifyContent='center'
         alignItems='center'
-        p={5}
+        pt={5}
         mb={5}
          color={grey[300]}
       >
         Hire The Best Professionals
       </Typography>
-      
       <Grid container spacing={3} p={6}>
+     
         {professionals.map((item) => (
          
              <Grid item xs={12} sm={6} md={4} lg={4} xl={4} mb={8}>

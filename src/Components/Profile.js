@@ -6,10 +6,12 @@ import { useParams, useNavigate } from "react-router-dom";
 import countryList from 'react-select-country-list';
  import {
   Paper,
+  Modal,
   Avatar,
   Grid,
    Typography,
   Stack,
+  Divider,
   Box,
   Button,
   IconButton,
@@ -23,15 +25,37 @@ import { BiEditAlt } from "react-icons/bi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { MdOutlineCancel } from "react-icons/md";
 import { BiArrowBack } from "react-icons/bi";
+import { FiAlertCircle } from "react-icons/fi";
 import axios from "axios";
 
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: '#212121',
+  borderRadius: '20px',
+  border:"2px solid white",
+  boxShadow: 24,
+  color:"white",
+  p: 4,
+};
 
 const Profile = ({ profileData, setProfileData }) => {
-  // console.log("user data",profileData)
   const navigate = useNavigate();
   const [edit, setEdit] = useState(false);
   const { register, handleSubmit } = useForm();
   const params = useParams();
+  // =======================Modal=============================
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => {
+    setEdit(false);
+    setOpen(false)};
+// ============================================================
+  // console.log("user data",profileData)
+  
 
   const editHandler = () => {
     setEdit(true);
@@ -39,7 +63,7 @@ const Profile = ({ profileData, setProfileData }) => {
   const cancelHandler = () => {
     setEdit(false);
   };
-  const deletehandler = async () => {
+  const deleteHandler = async () => {
     const del = await axios.delete(
       `https://625f910092df0bc0f3367d6b.mockapi.io/api/v1/Users/${params.id}`
     );
@@ -98,6 +122,28 @@ console.log("outer value",value)
       }}
       elevation={8}
     >
+      {/* ================================Modal============================ */}
+      <Modal
+        open={open}
+        onClose={handleClose}
+        
+      >
+        <Box sx={style}>
+          <Typography  variant="body1" component="h2">
+          <FiAlertCircle />
+            Are you sure to delete your profile.</Typography> 
+            <Stack direction="row" spacing={2}>
+            <Button variant="contained" color="success" onClick={deleteHandler}>
+            Yes
+          </Button>
+          <Button variant="contained" color="error" onClick={handleClose} >
+            No
+          </Button>
+            </Stack>
+          
+        </Box>
+      </Modal>
+      
       {/* =======================Menu Button==================== */}
 
       {/* <IconButton
@@ -150,11 +196,12 @@ console.log("outer value",value)
           >
             <MdOutlineCancel />
           </IconButton>
+          <Divider orientation="vertical" flexItem />
           <IconButton
             color='error'
             sx={{ float: "right", marginRight: "10px" }}
           >
-            <RiDeleteBin6Line onClick={deletehandler} />
+            <RiDeleteBin6Line onClick={handleOpen} />
           </IconButton>
         </>
       )}
@@ -180,16 +227,8 @@ console.log("outer value",value)
             alignItems='center'
             pt={4}
           >
-            <IconButton
-              color='success'
-              size='medium'
-              component='label'
-              sx={{ position: "relative", left: "100px", top: "150px" }}
-            >
-              <input type='file' hidden />
-              <FiUpload></FiUpload>
-            </IconButton>
-            <Avatar
+         {!edit ? (
+           <> <Avatar
               alt='avatar'
               src='user.jpg'
               sx={{
@@ -198,16 +237,41 @@ console.log("outer value",value)
                 border: "solid 5px white",
                 boxShadow: 5,
               }}
-            />
-
-            <Typography variant='h5'>{profileData.name}</Typography>
+            />       
+             <Typography variant='h5'>{profileData.name}</Typography>
+             </>
+           
+         ):(
+          <> <Avatar
+          alt='avatar'
+          src='user.jpg'
+          sx={{
+            width: "150px",
+            height: "150px",
+            border: "solid 5px white",
+            boxShadow: 5,
+          }}
+        />       
+         <Typography variant='h5'>{profileData.name}</Typography>
+       
+             <IconButton
+              color='success'
+              size='medium'
+              component='label'
+              sx={{ position: "relative", left: "100px", top: "-80px" }}
+            >
+              <input type='file' hidden />
+              <FiUpload></FiUpload>
+            </IconButton>
+            </>
+         )}
           </Stack>
-          {/* <Paper sx={{backgroundColor:"#e2e2e2", borderRadius:"10px", padding:"10px", maxWidth:"200px", boxShadow:"5px white"}} elevation={0}>
+          {/* <Paper sx={{backgroundColor:"#212121", borderRadius:"10px", padding:"10px", maxWidth:"200px", boxShadow:"5px white"}} elevation={0}>
               <Typography variant="caption">Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero
               eos fuga minus delectus quisquam.</Typography>
             </Paper> */}
         </Grid>
-        {/* <Divider orientation="vertical" flexItem></Divider> */}
+        {/* <Divider orientation="vertical" flexItem /> */}
 
         <Grid item xs={12} sm={12} md={8} lg={8} xl={8} p={3}>
           <Paper
@@ -346,25 +410,10 @@ console.log("outer value",value)
               ) : (
                 <>             
                    <Select 
+                   size="small"
                    sx={{
-                     "&:before": {
-                    borderColor: "white"
-                  },
-                  "&:after": {
-                    borderColor: "white"
-                  },
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "white",
-                     },
-                   "&:hover fieldset": {
-                     borderColor: "white",
-                     },
-                   "&.Mui-focused fieldset": {
-                      borderColor: "white",
-                     },
-                 },              
-                           
+                    border:"white 2px solid",
+                    color:"white"                 
                 }}
                    defaultValue={value}
                     value={value} 
@@ -376,27 +425,7 @@ console.log("outer value",value)
                      ))}
 
                    </Select>
-
-                  {/*  <Select
-                   sx={{
-                     "& .MuiOutlinedInput-root": {
-                       "& fieldset": {
-                         borderColor: "white",
-                        },
-                      "&:hover fieldset": {
-                        borderColor: "white",
-                        },
-                      "&.Mui-focused fieldset": {
-                         borderColor: "white",
-                        },
-                    },                      }}
-                    size='small'
-                    {...register("country")}
-                    // label={profileData.country}
-                   >
-                    <MenuItem>{profileData.country}</MenuItem>
-                  </Select> */}
-{/* ===================================Save and Cancle Buttonns========================== */}
+{/* ==================================Save and Cancle Buttonns========================== */}
                   <Stack spacing={2} direction='row' mt={3}>
                     <Button
                       type='submit'
@@ -406,13 +435,14 @@ console.log("outer value",value)
                     >
                       Save
                     </Button>
+                    
                     <Button
                       variant='contained'
                       onClick={cancelHandler}
                       color='error'
                       sx={{ width: "99px" }}
                     >
-                      Cancel
+                      Cancle
                     </Button>
                   </Stack>
                 </>
